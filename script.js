@@ -371,7 +371,7 @@ DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of
 23%
 
 GOOD LUCK 😀
-
+////////////////////////////////////////////////////////
 const Car = function (name,speed) {
 	this.name = name
 	this.speed = speed;

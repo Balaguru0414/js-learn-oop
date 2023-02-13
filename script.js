@@ -410,7 +410,165 @@ tesla.chrageBattery(90);
 console.log(tesla);
 tesla.brake();
 tesla.accelerate();
+//////////////////////////////////////////////////////////
+// Inheritance Between "Classes": ES6 Classes
+
+class PersonCl{
+	constructor(fullName,birthYear){
+		this.fullName = fullName;
+		this.birthYear = birthYear;		
+	};
+
+	calcAge(){
+		console.log(2023 - this.birthYear);
+	};
+
+	greet(){
+		console.log(`Hey ${this.fullName}`);
+	};
+
+	get age(){
+		return 2023 - this.birthYear;
+	};
+
+	set fullName(name) {
+		// console.log(name);
+		if(name.includes(' ')) this._fullName = name;
+		else alert(`${name} is not a full name`);
+	};
+
+	get fullName(){
+		return this._fullName;
+	};
+
+	// Static Method
+	static hey(){
+		console.log('hey there');
+	};
+};
+
+class StudentCl extends PersonCl {
+	constructor(fullName,birthYear,course){
+		// Always need to happen first
+		super(fullName,birthYear);
+		this.course = course;
+	}
+
+	introduce(){
+		console.log(`My name is ${this.fullName} and age is ${this.age}
+studied ${this.course}`)
+	}
+
+	calcAge(){
+		console.log(`i am ${2023 - this.birthYear} years old
+but as a student I feel more like ${
+        2023 - this.birthYear + 10
+      }`)
+	}
+}
+
+// const joshep = new StudentCl('joshep vijay',1989);
+const joshep = new StudentCl('joshep vijay',1989,'EEE')
+console.log(joshep);
+joshep.introduce();
+joshep.calcAge();
+
+///////////////////////////////////////////////////////////
+// Inheritance Between "Classes": object.create
+
+const PersonProto = {
+	calcAge(){
+		console.log(2023 - this.birthYear);
+	},
+
+	init(fullName,birthYear){
+		this.fullName = fullName;
+		this.birthYear = birthYear;
+	},
+};
+
+const mari = Object.create(PersonProto);
+
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (fullName,birthYear,course) {
+	PersonProto.init.call(this,fullName,birthYear);
+	this.course = course;
+};
+
+StudentProto.introduce = function () {
+	console.log(`My name is ${this.fullName} and I study ${this.course}`)
+};
+
+const rajesh = Object.create(StudentProto);
+rajesh.init('Rajesh',1999,'Web Developing');
+rajesh.introduce();
+rajesh.calcAge();
 */
+
+class Account {
+	constructor(owner,cuurency,pin){
+		this.owner = owner;
+		this.cuurency = cuurency;
+
+		// Protected Property
+		this._pin = pin;
+		this._movements = [];
+		this.locale = navigator.language;
+		// console.log(`Thanks for opening an account, ${owner}`)
+	}
+
+	// Public Interface
+	getMovements(){
+		return this._movements;
+	}
+
+	deposit(val){
+		this._movements.push(val);
+	}
+
+	withdraw(val){
+		this.deposit(-val);
+	}
+
+	_approveLoan(val){
+		return val;
+	}
+
+	requestLoan(val){
+		if (this._approveLoan(val)) {
+			this.deposit(val);
+			console.log(`Loan approved`)
+		}
+	}
+}
+
+const acc1 = new Account('Bala','INR',2222);
+// console.log(acc1);
+
+// acc1.movements.push(1000);
+// acc1.movements.push(-200);
+
+acc1.deposit(1000);
+acc1.withdraw(200)
+acc1.requestLoan(500);
+// acc1.approveLoan(1000);
+console.log(acc1.getMovements());
+
+console.log(acc1);
+console.log(acc1.pin); // 2222
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

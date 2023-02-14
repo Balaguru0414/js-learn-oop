@@ -503,42 +503,71 @@ const rajesh = Object.create(StudentProto);
 rajesh.init('Rajesh',1999,'Web Developing');
 rajesh.introduce();
 rajesh.calcAge();
-*/
+
+////////////////////////////////////////////////////////////
+
+// 1) Public Fields
+// 2) Private fields
+// 3) Public methods
+// 4) Private methods
+// (there is also the static version)
 
 class Account {
+	// 1) Public fields (instances)
+	loacale = navigator.language;
+
+	// 2) Private field (instances)
+	#movements = [];
+	#pin;
+
 	constructor(owner,cuurency,pin){
 		this.owner = owner;
 		this.cuurency = cuurency;
 
 		// Protected Property
-		this._pin = pin;
-		this._movements = [];
-		this.locale = navigator.language;
+		this.#pin = pin;
+		// this._movements = [];
+		// this.locale = navigator.language;
+
 		// console.log(`Thanks for opening an account, ${owner}`)
 	}
 
+	// 3) Public methods
+
 	// Public Interface
 	getMovements(){
-		return this._movements;
+		return this.#movements;
 	}
 
 	deposit(val){
-		this._movements.push(val);
+		this.#movements.push(val);
+		return this;
 	}
 
 	withdraw(val){
 		this.deposit(-val);
-	}
-
-	_approveLoan(val){
-		return val;
+		return this;
 	}
 
 	requestLoan(val){
+		// if (this.#approveLoan(val)) {
 		if (this._approveLoan(val)) {
 			this.deposit(val);
 			console.log(`Loan approved`)
 		}
+		return this;
+	}
+
+	// 4) Private methods
+	// #approveLoan(val){
+	_approveLoan(val){
+		return val;		// Jonas - return true
+	}
+
+	// static
+
+	static helper(){
+		console.log('helper');
 	}
 }
 
@@ -555,21 +584,96 @@ acc1.requestLoan(500);
 console.log(acc1.getMovements());
 
 console.log(acc1);
-console.log(acc1.pin); // 2222
+// console.log(acc1.pin); // 2222
 
+// console.log(acc1.#movements);
+// console.log(acc1.#pin); 
+// console.log(acc1.#approveLoan);
 
+Account.helper();
 
+// Chaining
 
+acc1.deposit(600).deposit(400).withdraw(500)
+	.requestLoan(10000).withdraw(5000);
+console.log(acc1.getMovements());
+///////////////////////////////////////////////////////////
+coding challenge 4
 
+1. Re-create challenge #3, but this time using ES6 classes: 
+create an 'EVCl' child class of the 'CarCl' class
 
+2. Make the 'charge' property private;
 
+3. Implement the ability to chain the 'accelerate' and 
+'chargeBattery' methods of this class, and also update the 
+'brake' method in the 'CarCl' class. They experiment with 
+chining!
 
+DATA CAR 1: 'Rivian' going at 120 km/h, with a charge of 23%
 
+GOOD LUCK 😀
 
+class CarCl{
+	constructor(name,speed) {
+	this.name = name
+	this.speed = speed;
+	};
 
+	accelerate () {
+		this.speed += 10;
+		console.log(`${this.name} is going at ${this.speed} km/h.`)
+	};
 
+	brake () {
+		this.speed -= 5;
+		console.log(`${this.name} is going at ${this.speed} km/h.`);
+		return this;
+	}
 
+	get speedUS (){
+		return this.speed / 1.6;
+	}
 
+	set speedUS (speed){
+		this.speed =speed * 1.6;
+	}
+};
+
+class EVCl extends CarCl { 
+	#charge;
+	constructor (name,speed,charge) {
+	super(name,speed);
+	this.#charge = charge;
+	}
+
+	chrageBattery (chargeTo) {
+		this.#charge = chargeTo;
+		return this;
+	}
+
+	accelerate(){
+		this.speed += 20;
+		this.#charge--;
+		console.log(`${this.name} is going at ${this.speed} km/h, with a charge of ${this.#charge}%`);
+		return this;
+	}
+};
+
+const lakshmanan = new EVCl('Lakshmanan',120,23)
+console.log(lakshmanan);
+// console.log(lakshmanan.#charge);
+
+lakshmanan
+	.accelerate()
+	.accelerate()
+	.accelerate()
+	.brake()
+	.chrageBattery(50)
+	.accelerate();
+
+console.log(lakshmanan.speedUS);
+*/
 
 
 
